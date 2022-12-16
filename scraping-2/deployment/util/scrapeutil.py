@@ -2,7 +2,6 @@ import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from dateutil import parser
 from selenium.webdriver.common.by import By
 import threading
 from configparser import ConfigParser
@@ -10,9 +9,25 @@ from configparser import ConfigParser
 config = ConfigParser()
 config.read("./config.ini")
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+if config['DEFAULT']['ENVIRONMENT'] == 'DEVELOPMENT':
+    driver = webdriver.Chrome(
+        service=ChromeService(ChromeDriverManager().install()),
+    )
+elif config['DEFAULT']['ENVIRONMENT'] == 'PRODUCTION':
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    
+    driver = webdriver.Remote(
+        command_executor='http://chrome:4444/wd/hub',
+        options=chrome_options
+    )
 
 def scrape(symbol: str):
     driver.get(f'https://stockbit.com/symbol/{symbol}')

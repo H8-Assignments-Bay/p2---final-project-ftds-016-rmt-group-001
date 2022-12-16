@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from scrapeutil import get_db
+from util.scrapeutil import get_db
 
 app = Flask(__name__)
 
