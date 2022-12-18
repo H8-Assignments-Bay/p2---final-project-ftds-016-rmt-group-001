@@ -11,8 +11,6 @@ from time import sleep
 config = ConfigParser()
 config.read("./config.ini")
 
-# handle urllib3.exceptions.MaxRetryError
-sleep(3)
 if config['DEFAULT']['ENVIRONMENT'] == 'DEVELOPMENT':
     driver = webdriver.Chrome(
         service=ChromeService(ChromeDriverManager().install()),
@@ -28,6 +26,8 @@ elif config['DEFAULT']['ENVIRONMENT'] == 'PRODUCTION':
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     
+    # Handle: urllib3.exceptions.MaxRetryError
+    sleep(3)
     driver = webdriver.Remote(
         command_executor='http://chrome:4444/wd/hub',
         options=chrome_options
@@ -43,7 +43,8 @@ def scrape(symbol: str):
         if len(date_elements) != 0:
             break
         
-    comment_elements = driver.find_elements(by=By.XPATH, value="//p[@padding='0px']")
+    # Handle: All arrays must be of the same length
+    comment_elements = driver.find_elements(by=By.XPATH, value="//p[@color='#333333' and @style='word-wrap:break-word']")
     
     dates = [date_element.text for date_element in date_elements]
     comments = [comment_element.text for comment_element in comment_elements]
@@ -56,31 +57,27 @@ def scrape(symbol: str):
 def __populate_db():
     global db 
     
-    if config['DEFAULT']['ENVIRONMENT'] == 'DEVELOPMENT':
-        db = pd.read_csv("./ICBP_MLBI.csv")
-    elif config['DEFAULT']['ENVIRONMENT'] == 'PRODUCTION':
-        db = pd.DataFrame()
-        symbols = [
-            'ICBP', 'CPIN', 'INDF', 'MYOR', 'CMRY', 'GOOD', 'MLBI',
-            'PANI', 'JPFA', 'AALI', 'ULTJ', 'FAPA', 'SMAR', 'SSMS',
-            'STAA', 'STTP', 'ROTI', 'LSIP', 'TLDN', 'SIMP', 'PALM',
-            'CLEO', 'DSNG', 'ADES', 'WMPP', 'TBLA', 'CPRO', 'SGRO', 'BISI',
-            'FISH', 'PSGO', 'JARR', 'DLTA', 'MGRO', 'ANJT', 'BWPT', 'KEJU', 
-            'TRGU', 'CAMP', 'WMUU', 'MAIN', 'CEKA', 'CSRA', 'AISA', 'HOKI'
-        ]
+    db = pd.DataFrame()
+    symbols = [
+        'DSNG'
+        # 'ICBP', 'CPIN', 'INDF', 'MYOR', 'CMRY', 'GOOD', 'MLBI',
+        # 'PANI', 'JPFA', 'AALI', 'ULTJ', 'FAPA', 'SMAR', 'SSMS',
+        # 'STAA', 'STTP', 'ROTI', 'LSIP', 'TLDN', 'SIMP', 'PALM',
+        # 'CLEO', 'DSNG', 'ADES', 'WMPP', 'TBLA', 'CPRO', 'SGRO', 'BISI',
+        # 'FISH', 'PSGO', 'JARR', 'DLTA', 'MGRO', 'ANJT', 'BWPT', 'KEJU', 
+        # 'TRGU', 'CAMP', 'WMUU', 'MAIN', 'CEKA', 'CSRA', 'AISA', 'HOKI'
+    ]
+    
+    for symbol in symbols:
+        dates, comments = scrape(symbol)
         
-        for symbol in symbols:
-            dates, comments = scrape(symbol)
-            
-            df_c = pd.DataFrame(data={'date': dates, 'comment': comments, 'symbol': symbol})
-            
-            db = pd.concat([db, df_c])
+        df_c = pd.DataFrame(data={'date': dates, 'comment': comments, 'symbol': symbol})
         
-        # scrape daily.
-        scrape_daily = threading.Timer(interval=3600*24, function=__populate_db)
-        scrape_daily.start()
-    else:
-        raise Exception("config['DEFAULT']['ENVIRONMENT'] is unknown")
+        db = pd.concat([db, df_c])
+    
+    # scrape daily.
+    scrape_daily = threading.Timer(interval=3600*24, function=__populate_db)
+    scrape_daily.start()
 
 __populate_db()
 
