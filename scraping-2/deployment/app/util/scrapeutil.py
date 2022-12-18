@@ -8,12 +8,11 @@ from configparser import ConfigParser
 
 from time import sleep
 
-# handle urllib3.exceptions.MaxRetryError
-sleep(3)
-
 config = ConfigParser()
 config.read("./config.ini")
 
+# handle urllib3.exceptions.MaxRetryError
+sleep(3)
 if config['DEFAULT']['ENVIRONMENT'] == 'DEVELOPMENT':
     driver = webdriver.Chrome(
         service=ChromeService(ChromeDriverManager().install()),
@@ -63,11 +62,11 @@ def __populate_db():
         db = pd.DataFrame()
         symbols = [
             'ICBP', 'CPIN', 'INDF', 'MYOR', 'CMRY', 'GOOD', 'MLBI',
-            # 'PANI', 'JPFA', 'AALI', 'ULTJ', 'FAPA', 'SMAR', 'SSMS',
-            # 'STAA', 'STTP', 'ROTI', 'LSIP', 'TLDN', 'SIMP', 'PALM',
-            # 'CLEO', 'DSNG', 'ADES', 'WMPP', 'TBLA', 'CPRO', 'SGRO', 'BISI',
-            # 'FISH', 'PSGO', 'JARR', 'DLTA', 'MGRO', 'ANJT', 'BWPT', 'KEJU', 
-            # 'TRGU', 'CAMP', 'WMUU', 'MAIN', 'CEKA', 'CSRA', 'AISA', 'HOKI'
+            'PANI', 'JPFA', 'AALI', 'ULTJ', 'FAPA', 'SMAR', 'SSMS',
+            'STAA', 'STTP', 'ROTI', 'LSIP', 'TLDN', 'SIMP', 'PALM',
+            'CLEO', 'DSNG', 'ADES', 'WMPP', 'TBLA', 'CPRO', 'SGRO', 'BISI',
+            'FISH', 'PSGO', 'JARR', 'DLTA', 'MGRO', 'ANJT', 'BWPT', 'KEJU', 
+            'TRGU', 'CAMP', 'WMUU', 'MAIN', 'CEKA', 'CSRA', 'AISA', 'HOKI'
         ]
         
         for symbol in symbols:
