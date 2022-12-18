@@ -6,6 +6,11 @@ from selenium.webdriver.common.by import By
 import threading
 from configparser import ConfigParser
 
+from time import sleep
+
+# handle urllib3.exceptions.MaxRetryError
+sleep(3)
+
 config = ConfigParser()
 config.read("./config.ini")
 

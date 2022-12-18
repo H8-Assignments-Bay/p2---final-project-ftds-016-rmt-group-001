@@ -11,14 +11,14 @@ services:
       - SE_NODE_SESSION_TIMEOUT=172800
       # reference: https://github.com/SeleniumHQ/docker-selenium#running-in-headless-mode
       - SE_START_XVFB=false
-  bot:
+  app:
     build: .
     depends_on:
       - chrome
   nginx:
     image: nginx:1.22
     depends_on:
-      - bot
+      - app
     ports:
       - 80:80
       - 443:443
