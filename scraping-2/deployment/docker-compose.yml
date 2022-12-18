@@ -15,8 +15,6 @@ services:
     build: .
     depends_on:
       - chrome
-    ports:
-      - 8080:8080
   nginx:
     image: nginx:1.22
     depends_on:
