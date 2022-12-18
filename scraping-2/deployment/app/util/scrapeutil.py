@@ -59,13 +59,12 @@ def __populate_db():
     
     db = pd.DataFrame()
     symbols = [
-        'DSNG'
-        # 'ICBP', 'CPIN', 'INDF', 'MYOR', 'CMRY', 'GOOD', 'MLBI',
-        # 'PANI', 'JPFA', 'AALI', 'ULTJ', 'FAPA', 'SMAR', 'SSMS',
-        # 'STAA', 'STTP', 'ROTI', 'LSIP', 'TLDN', 'SIMP', 'PALM',
-        # 'CLEO', 'DSNG', 'ADES', 'WMPP', 'TBLA', 'CPRO', 'SGRO', 'BISI',
-        # 'FISH', 'PSGO', 'JARR', 'DLTA', 'MGRO', 'ANJT', 'BWPT', 'KEJU', 
-        # 'TRGU', 'CAMP', 'WMUU', 'MAIN', 'CEKA', 'CSRA', 'AISA', 'HOKI'
+        'ICBP', 'CPIN', 'INDF', 'MYOR', 'CMRY', 'GOOD', 'MLBI',
+        'PANI', 'JPFA', 'AALI', 'ULTJ', 'FAPA', 'SMAR', 'SSMS',
+        'STAA', 'STTP', 'ROTI', 'LSIP', 'TLDN', 'SIMP', 'PALM',
+        'CLEO', 'DSNG', 'ADES', 'WMPP', 'TBLA', 'CPRO', 'SGRO', 'BISI',
+        'FISH', 'PSGO', 'JARR', 'DLTA', 'MGRO', 'ANJT', 'BWPT', 'KEJU', 
+        'TRGU', 'CAMP', 'WMUU', 'MAIN', 'CEKA', 'CSRA', 'AISA', 'HOKI'
     ]
     
     for symbol in symbols:
