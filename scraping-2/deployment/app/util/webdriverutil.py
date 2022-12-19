@@ -26,7 +26,7 @@ def __create_webdriver():
         chrome_options.add_argument('--disable-dev-shm-usage')
     
         # Handle: urllib3.exceptions.MaxRetryError
-        sleep(1)
+        sleep(3)
         driver = webdriver.Remote(
             command_executor='http://chrome:4444/wd/hub',
             options=chrome_options
