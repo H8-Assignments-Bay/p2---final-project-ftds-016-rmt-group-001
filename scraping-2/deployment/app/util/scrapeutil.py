@@ -4,7 +4,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import pandas as pd
 import numpy as np
-from time import sleep
+from util.cacheutil import get_cache, set_cache
+
 # import threading
 
 def __get_comments(driver: WebDriver, symbol: str, start_from: int, end_at: int):
@@ -80,30 +81,41 @@ def __get_comments(driver: WebDriver, symbol: str, start_from: int, end_at: int)
 
 # __populate_db()
 
-def predict_spam(comments: pd.DataFrame):
+# TODO: Not Spam/Spam Model
+def __predict_spam(comments: pd.DataFrame):
     return np.random.randint(0,2, comments.shape[0])
 
-def predict_subject(comments: pd.DataFrame):
+# TODO: Rule-based Filter
+def __predict_subject(comments: pd.DataFrame):
     return np.random.randint(0,2,comments.shape[0])
 
-def predict_sentiment(comments: pd.DataFrame):
+# TODO: Neutral/Negative/Positive Model
+def __predict_sentiment(comments: pd.DataFrame):
     return np.random.randint(0,3,comments.shape[0])
+
+def __do_predict_chain(driver: WebDriver, symbol: str, start_from: int, end_at: int):
+    comments = __get_comments(driver=driver, symbol=symbol, start_from=start_from,
+                                end_at=end_at)
+    
+    comments['label 2'] = __predict_spam(comments)
+    
+    comments.loc[comments['label 2'] == 0, 'subject'] = __predict_subject(comments[comments['label 2'] == 0])
+    
+    comments.loc[comments['subject'] == True, 'label 1'] = __predict_sentiment(comments[comments['subject'] == True])
+    
+    set_cache(symbol, comments)
+    
+    return comments
 
 def get_sentiment(symbol: str, start_from: int, end_at: int):
     driver = get_webdriver()
     
-    comments = __get_comments(driver=driver, symbol=symbol, start_from=start_from,
-                              end_at=end_at)
+    comments = get_cache(symbol)
     
-    # TODO: Not Spam/Spam Model
-    comments['label 2'] = predict_spam(comments)
-    
-    # TODO: Rule-based Filter
-    comments.loc[comments['label 2'] == 0, 'subject'] = predict_subject(comments[comments['label 2'] == 0])
-    
-    # TODO: Neutral/Negative/Positive Model
-    comments.loc[comments['subject'] == True, 'label 1'] = predict_sentiment(comments[comments['subject'] == True])
-    
+    if comments is None or len(comments) < end_at:
+        comments = __do_predict_chain(driver=driver, symbol=symbol, start_from=start_from, 
+                                    end_at=end_at)
+        
     return {
         'neutral': len(comments[comments['label 1'] == 0]),
         'negative': len(comments[comments['label 1'] == 1]),
