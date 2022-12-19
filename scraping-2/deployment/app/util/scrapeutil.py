@@ -1,6 +1,5 @@
 from util.webdriverutil import get_webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import pandas as pd
 import numpy as np
@@ -8,7 +7,7 @@ from util.cacheutil import get_cache, set_cache
 
 # import threading
 
-def __get_comments(driver: WebDriver, symbol: str, start_from: int, end_at: int):
+def __get_comments(driver: WebDriver, symbol: str, end_at: int):
     driver.get(f'https://stockbit.com/symbol/{symbol}')
     
     while True:
@@ -48,7 +47,7 @@ def __get_comments(driver: WebDriver, symbol: str, start_from: int, end_at: int)
     # print(f'{symbol} dates {len(dates)} comments {len(comments)}')
     # print(dates[-1], comments[-1])
     
-    return pd.DataFrame(data={ 'date': dates, 'comment': comments})[start_from:end_at]
+    return pd.DataFrame(data={ 'date': dates, 'comment': comments})
 
 # def __populate_db():
 #     global db 
@@ -93,9 +92,8 @@ def __predict_subject(comments: pd.DataFrame):
 def __predict_sentiment(comments: pd.DataFrame):
     return np.random.randint(0,3,comments.shape[0])
 
-def __do_predict_chain(driver: WebDriver, symbol: str, start_from: int, end_at: int):
-    comments = __get_comments(driver=driver, symbol=symbol, start_from=start_from,
-                                end_at=end_at)
+def __do_predict_chain(driver: WebDriver, symbol: str, end_at: int):
+    comments = __get_comments(driver=driver, symbol=symbol, end_at=end_at)
     
     comments['label 2'] = __predict_spam(comments)
     
@@ -112,9 +110,11 @@ def get_sentiment(symbol: str, start_from: int, end_at: int):
     
     comments = get_cache(symbol)
     
-    if comments is None or len(comments) < end_at:
-        comments = __do_predict_chain(driver=driver, symbol=symbol, start_from=start_from, 
-                                    end_at=end_at)
+    # end_at - 1 because we drop 1 row to handle StaleElementReferenceException or ''
+    if comments is None or len(comments) < end_at - 1:
+        comments = __do_predict_chain(driver=driver, symbol=symbol, end_at=end_at)
+        
+    comments = comments[start_from:end_at]
         
     return {
         'neutral': len(comments[comments['label 1'] == 0]),

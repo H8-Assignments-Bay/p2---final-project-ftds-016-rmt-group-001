@@ -1,8 +1,15 @@
 # Note
 
-The selenium connection is slow. It takes at least a minute.
+Create `secret.ini` file in the `app` folder.
+```
+[DEFAULT]
+email=
+password=
+```
 
 # Development
+
+Change `config.ini` ENVIRONMENT to DEVELOPMENT
 
 ARM64
 
@@ -21,8 +28,3 @@ Docker Compose
 ```
 docker-compose up --build
 ```
-
-TODO:
-- [ ] seleniarm/standalone-chromium (docker) + flask (docker) boot is very slow.
-
-  - Culprit found: when `app.py` import `scraputil`, the webdriver gets called. So, it open the browser 2 times.

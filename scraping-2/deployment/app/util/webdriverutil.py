@@ -2,19 +2,20 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from configparser import ConfigParser
 from time import sleep
 
 config = ConfigParser()
 config.read("./config.ini")
 
+environment = config['DEFAULT']['ENVIRONMENT']
+
 def __create_webdriver():
-    if config['DEFAULT']['ENVIRONMENT'] == 'DEVELOPMENT':
+    if environment == 'DEVELOPMENT':
         driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),
         )
-    elif config['DEFAULT']['ENVIRONMENT'] == 'PRODUCTION':
+    elif environment == 'PRODUCTION':
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--disable-extensions")
@@ -31,6 +32,8 @@ def __create_webdriver():
             command_executor='http://chrome:4444/wd/hub',
             options=chrome_options
         )
+    else:
+        raise Exception(f'unknown environment {environment} in config ini')
 
     secret = ConfigParser()
     secret.read('./secret.ini')
@@ -58,5 +61,5 @@ def get_webdriver():
     return driver
 
 # it takes time for webdriver.Remote()
-if config['DEFAULT']['ENVIRONMENT'] == 'PRODUCTION':
+if environment == 'PRODUCTION':
     get_webdriver()
