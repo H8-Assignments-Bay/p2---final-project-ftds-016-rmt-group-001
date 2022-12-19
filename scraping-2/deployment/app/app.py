@@ -1,6 +1,7 @@
 from flask import Flask, request, Response
 from util import scrapeutil
 import json
+from util import stockutil
 
 app = Flask(__name__)
 
@@ -37,3 +38,14 @@ def get_sentiment():
             "comments": sentiment['comments']
         }),
         mimetype='application/json')
+    
+@app.route('/search')
+def query():
+    args = request.args
+    
+    query = args.get("query")
+    
+    if query == None:
+        return "", 400
+    
+    return stockutil.get_stock_name(query=query)
