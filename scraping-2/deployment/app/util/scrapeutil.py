@@ -1,4 +1,4 @@
-from util.webdriveruitl import get_webdriver
+from util.webdriverutil import get_webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
