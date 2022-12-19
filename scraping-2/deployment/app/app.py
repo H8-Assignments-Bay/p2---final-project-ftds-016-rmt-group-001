@@ -1,14 +1,39 @@
 from flask import Flask, request, Response
-from util.scrapeutil import get_db
+from util import scrapeutil
+import json
 
 app = Flask(__name__)
 
 @app.route('/sentiment')
 def get_sentiment():
-    args = request.json
+    args = request.args
     
     symbol = args.get("symbol")
     if symbol == None:
         return "", 400
     
-    return Response(get_db(symbol=symbol).to_json(orient="records"), mimetype='application/json')
+    start_from = args.get("start_from")
+    try:
+        start_from = int(start_from)
+    except (TypeError, ValueError):
+        return "", 400
+    
+    end_at = args.get("end_at")
+    try:
+        end_at = int(end_at)
+    except (TypeError, ValueError):
+        return "", 400
+    
+    sentiment = scrapeutil.get_sentiment(
+        symbol=symbol, start_from=start_from, 
+        end_at=end_at)
+    
+    return Response(
+        json.dumps({
+            "symbol": symbol,
+            "neutral": sentiment['neutral'],
+            "negative": sentiment['negative'],
+            "positive": sentiment['positive'],
+            "comments": sentiment['comments']
+        }),
+        mimetype='application/json')
