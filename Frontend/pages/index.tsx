@@ -58,15 +58,14 @@ const ArticleList = ({ data }: any) => {
         {data.symbol}
       </Heading>
       <Divider marginTop="5" />
-      <Wrap spacing="30px" marginTop="5">
+      <Wrap display="flex"  spacing="30px" marginTop="5">
         {comments.map((comment: any,index: any) => {
           return (
-            <WrapItem key={index} width={{ base: "100" }}>
+            <WrapItem flex= "1" flexBasis= "100%" key={index} width={{ base: "100" }}>
               <Box w="100%">
                 <HStack
                   marginTop="2"
                   spacing="2"
-                  display="flex"
                   alignItems="center"
                 >
                   <Text fontWeight="medium">{comment.date}</Text>
