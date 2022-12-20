@@ -59,9 +59,9 @@ const ArticleList = ({ data }: any) => {
       </Heading>
       <Divider marginTop="5" />
       <Wrap spacing="30px" marginTop="5">
-        {comments.map((comment: any) => {
+        {comments.map((comment: any,index: any) => {
           return (
-            <WrapItem width={{ base: "100" }}>
+            <WrapItem key={index} width={{ base: "100" }}>
               <Box w="100%">
                 <HStack
                   marginTop="2"
@@ -97,7 +97,7 @@ const ArticleList = ({ data }: any) => {
 export async function getServerSideProps() {
   // Fetch data from external API
   const res = await fetch(
-    `https://somas.godata.id/sentiment?symbol=ICBP&start_from=0&end_at=30`
+    `https://somas.godata.id/sentiment?symbol=PANI&start_from=0&end_at=30`
   ).then(async (response) => {
     try {
       const data = await response.json();

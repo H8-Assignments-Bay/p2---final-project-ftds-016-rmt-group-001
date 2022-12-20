@@ -42,9 +42,9 @@ const ArticleList = ({ data }: any) => {
       </Heading>
       <Divider marginTop="5" />
       <Wrap spacing="30px" marginTop="5">
-        {comments.map((comment: any) => {
+        {comments.map((comment: any,index: any) => {
           return (
-            <WrapItem width={{ base: "100" }}>
+            <WrapItem key={index} width={{ base: "100" }}>
               <Box w="100%">
                 <HStack
                   marginTop="2"
