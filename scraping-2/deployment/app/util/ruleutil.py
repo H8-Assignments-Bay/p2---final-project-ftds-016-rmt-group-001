@@ -11,32 +11,35 @@ def get_finds(comment: str):
   
 def is_subject_equal_to_symbol(finds: list[list[str]], symbol: str):
   
-  for index, finds in enumerate(finds):
+  for index, items in enumerate(finds):
     # check 1st finds
     if index == 0:
+
       # no subject
       # e.g "sahamnya bagus"
-      if len(finds) == 0: return 1
+      if len(items) == 0: return 1
+      
       # 1st finds length is 1
       # e.g "GOTO bagus"
-      if len(finds) == 1:
+      if len(items) == 1:
+
         # e.g "IHSG naik 0.3% Rekomendasi Saham GOTO, ICBP"
-        if finds[0] == "IHSG": continue
-        elif finds[0] == symbol: return 1
+        if items[0] == "IHSG": continue
+        elif items[0] == symbol: return 1
         else: return 0
     
     # check 1st and 2nd finds
     # 2nd finds length is 1
     # e.g "IHSG naik 0.3% GOTO bagus"
-    if len(finds) == 1:
+    if len(items) == 1:
       if finds[0] == symbol: return 1
 
     else:
       # finds length are more than 1.
       # e.g "GOTO, ICBP bagus"
       # e.g "IHSG naik 0.3% GOTO, ICBP bagus"
-      for find in finds:
-        if find == symbol: return 1
+      for item in items:
+        if item == symbol: return 1
 
   # unknown pattern.
   # verdict: Reject
