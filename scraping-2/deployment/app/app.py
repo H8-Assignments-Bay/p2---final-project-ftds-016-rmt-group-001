@@ -1,9 +1,11 @@
 from flask import Flask, request, Response
+from flask_cors import CORS
 from util.predictutil import predict_or_get_sentiment
 from util.stockutil import get_stock_name
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/sentiment')
 def get_sentiment():
