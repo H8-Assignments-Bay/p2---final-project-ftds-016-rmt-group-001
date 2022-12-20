@@ -6,3 +6,5 @@ selenium==4.5.*
 
 # Development
 webdriver-manager==3.8.*
+
+scikit-learn==1.0.2

@@ -1,7 +1,7 @@
 from flask import Flask, request, Response
-from util import scrapeutil
+from util.predictutil import predict_or_get_sentiment
+from util.stockutil import get_stock_name
 import json
-from util import stockutil
 
 app = Flask(__name__)
 
@@ -25,7 +25,7 @@ def get_sentiment():
     except (TypeError, ValueError):
         return "", 400
     
-    sentiment = scrapeutil.get_sentiment(
+    sentiment = predict_or_get_sentiment(
         symbol=symbol, start_from=start_from, 
         end_at=end_at)
     
@@ -48,4 +48,4 @@ def query():
     if query == None:
         return "", 400
     
-    return stockutil.get_stock_name(query=query)
+    return get_stock_name(query=query)
