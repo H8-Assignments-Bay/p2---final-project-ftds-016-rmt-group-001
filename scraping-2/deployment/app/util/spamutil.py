@@ -16,7 +16,7 @@ def __load_slangwords_stopwords():
             __slangwords[key] = val
 
     with open('./util/model/stopwords_v2.txt') as file_2:
-        __stopwords = [item.rstrip() for item in list(file_2)]
+        __stopwords = [item.rstrip() for item in list(file_2)] + ['saham', 'perusahaan', 'yg', 'harga', 'tahun']
         
     with open('./util/model/count_vect.pkl', 'rb') as file_3:
         __vectorizer = joblib.load(file_3)
