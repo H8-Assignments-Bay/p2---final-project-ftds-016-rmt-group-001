@@ -47,7 +47,7 @@ def is_subject_equal_to_symbol(finds: list[list[str]], symbol: str):
 
 def predict_subject(comments: pd.DataFrame, symbol: str):
     
-    comments['finds'] = comments['comment'].apply(lambda comment: get_finds(comment))
-    comments['subject'] = comments.apply(lambda row: is_subject_equal_to_symbol(row['finds'], symbol), axis=1)
+    finds = comments['comment'].apply(lambda comment: get_finds(comment))
+    subject = finds.apply(lambda row: is_subject_equal_to_symbol(row, symbol))
     
-    return comments['subject'].tolist()
+    return subject.tolist()
