@@ -12,8 +12,10 @@ def __do_predict_chain(driver: WebDriver, symbol: str, end_at: int):
     comments['label 2'] = predict_spam(comments)
     
     comments.loc[comments['label 2'] == 0, 'subject'] = predict_subject(comments[comments['label 2'] == 0])
+    comments['label 2'].fillna(value="", inplace=True)
     
     comments.loc[comments['subject'] == True, 'label 1'] = predict_sentiment(comments[comments['subject'] == True])
+    comments['label 1'].fillna(value="", inplace=True)
     
     return comments
 
