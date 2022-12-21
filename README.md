@@ -35,7 +35,7 @@ Under the hood we use Selenium, Scikit-Learn, NLTK, Regular Expression, Pandas, 
 
 - Ardiansyah Arya Salvinia [![](./images/linkedin.png)](https://www.linkedin.com/in/ardiansyaharyasalvinia/) [![](./images/github.png)](https://github.com/ArdiansyahArya)
 - Febrian Hendifa [![](./images/linkedin.png)](https://www.linkedin.com/in/febrian-hendifa/) [![](./images/github.png)](https://github.com/fhendifa)
-- Husain Tsabit Abdur Rahim [![](./images/linkedin.png)](https://www.linkedin.com/in/husain-tsabit/) [![](./images/linkedin.png)](https://www.linkedin.com/in/ucikrefani/) [![](./images/github.png)](https://github.com/HusainTsabit)
+- Husain Tsabit Abdur Rahim [![](./images/linkedin.png)](https://www.linkedin.com/in/husain-tsabit/) [![](./images/github.png)](https://github.com/HusainTsabit)
 - Jason Rich Darmawan [![](./images/linkedin.png)](https://www.linkedin.com/in/jasonrichdarmawan/) [![](./images/github.png)](https://github.com/jasonrichdarmawan)
 - Rafif Dwiputra [![](./images/linkedin.png)](https://www.linkedin.com/in/rafifdwptr/) [![](./images/github.png)](https://github.com/rafifdwptr13)
 - Ucik Refani Kurnia [![](./images/linkedin.png)](https://www.linkedin.com/in/ucikrefani/) [![](./images/github.png)](https://github.com/ucikrefani)
