@@ -1,0 +1,8 @@
+## Create A New Stopwords
+new_stop_words = ['saham', 'perusahaan', 'yg', 'harga','tahun']
+
+## Merge Stopwords
+stop_words = stopwords + new_stop_words
+stop_words = list(set(stop_words))
+print('Out Final Stopwords')
+print(len(stop_words), stop_words)
