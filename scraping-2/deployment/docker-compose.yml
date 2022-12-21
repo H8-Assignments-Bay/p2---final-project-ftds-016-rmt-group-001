@@ -1,7 +1,8 @@
 version: '3'
 services:
   chrome:
-    image: seleniarm/standalone-chromium:latest
+    image: selenium/standalone-chrome:latest
+    # image: seleniarm/standalone-chromium:latest
 
     # reference: https://github.com/SeleniumHQ/docker-selenium#--shm-size2g
     # Actually no issue. Just a prevention.
@@ -11,9 +12,17 @@ services:
       - SE_NODE_SESSION_TIMEOUT=172800
       # reference: https://github.com/SeleniumHQ/docker-selenium#running-in-headless-mode
       - SE_START_XVFB=false
-  bot:
+  app:
     build: .
     depends_on:
       - chrome
+  nginx:
+    image: nginx:1.22
+    depends_on:
+      - app
     ports:
-      - 8080:8080
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt/archive/somas.godata.id:/etc/letsencrypt/live/somas.godata.id

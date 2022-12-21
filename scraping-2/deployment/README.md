@@ -1,4 +1,15 @@
+# Note
+
+Create `secret.ini` file in the `app` folder.
+```
+[DEFAULT]
+email=
+password=
+```
+
 # Development
+
+Change `config.ini` ENVIRONMENT to DEVELOPMENT
 
 ARM64
 
@@ -17,6 +28,3 @@ Docker Compose
 ```
 docker-compose up --build
 ```
-
-TODO:
-- [ ] seleniarm/standalone-chromium (docker) + flask (docker) boot is very slow.
