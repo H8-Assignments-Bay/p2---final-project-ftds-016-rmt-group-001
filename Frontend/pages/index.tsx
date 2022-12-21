@@ -93,10 +93,11 @@ const ArticleList = ({ data }: any) => {
     </Container>
   );
 };
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
   // Fetch data from external API
+  console.log(context.query.symbol)
   const res = await fetch(
-    `https://somas.godata.id/sentiment?symbol=PANI&start_from=0&end_at=30`
+    `https://somas.godata.id/sentiment?symbol=${context.query.symbol ? context.query.symbol : "ICBP"}&start_from=0&end_at=30`
   ).then(async (response) => {
     try {
       const data = await response.json();
