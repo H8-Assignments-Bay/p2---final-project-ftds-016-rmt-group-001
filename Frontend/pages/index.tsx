@@ -22,7 +22,8 @@ import {
   Container,
   Input,
   LinkBox, 
-  LinkOverlay, 
+  LinkOverlay,
+  Progress,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -90,6 +91,42 @@ const ArticleList = ({ data }: any) => {
       <Heading as="h2" marginTop="5" textAlign="center">
         {data.symbol}
       </Heading>
+      <Divider marginTop="5" />
+      <HStack marginTop="2" spacing="2" alignItems="center">
+        <Text fontWeight="medium">Positive</Text>
+      </HStack>
+      <Progress
+        hasStripe
+        colorScheme="green"
+        value={
+          (data.positive / (data.positive + data.negative + data.neutral)) * 100
+        }
+        isAnimated
+      ></Progress>
+      <Divider marginTop="5" />
+      <HStack marginTop="2" spacing="2" alignItems="center">
+        <Text fontWeight="medium">Neutral</Text>
+      </HStack>
+      <Progress
+        hasStripe
+        value={
+          (data.neutral / (data.positive + data.negative + data.neutral)) * 100
+        }
+        colorScheme="gray"
+        isAnimated
+      />
+      <Divider marginTop="5" />
+      <HStack marginTop="2" spacing="2" alignItems="center">
+        <Text fontWeight="medium">Negative</Text>
+      </HStack>
+      <Progress
+        hasStripe
+        colorScheme="red"
+        value={
+          (data.negative / (data.positive + data.negative + data.neutral)) * 100
+        }
+        isAnimated
+      />
       <Divider marginTop="5" />
       <Wrap display="flex" spacing="30px" marginTop="5">
         {data.comments.map((comment: any, index: any) => {
