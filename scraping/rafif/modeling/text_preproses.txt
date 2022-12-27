@@ -1,0 +1,37 @@
+def textproses(text):
+  
+  # Menghilangkan nama saham
+  text = re.sub("\$[A-Z]{4}| [A-Z]{4} ", " ", text)
+
+  # Mengubah text ke Lowercase agar semua data seragam
+  text = text.lower()
+
+  # Menghilangkan @/Mention karena pada berita palsu ada mention akun twitter
+  text = re.sub("@[A-Za-z0-9]+", " ", text)
+
+  # Menghilangkan #/Hashtag untuk mengantisipasi karena berita palsu mengambil dari twitter
+  text = re.sub("#[A-Za-z0-9_]+", " ", text)
+  
+  # Menghilangkan \n untuk antisipasi
+  text = re.sub(r"\n", " ",text)
+
+  # Menghilangkan Whitespace untuk antisipasi
+  text = text.strip()
+
+  # Menghilangkan Link dikarenakan berita palsu terdapat link ke artikel lain
+  text = re.sub(r"http\S+", " ", text)
+  text = re.sub(r"www.\S+", " ", text)
+
+  # Menghilangkan yang Bukan Huruf seperti Emoji, Simbol Matematika (seperti μ), dst untuk antisipasi
+  text = re.sub("[^A-Za-z\s']", " ", text)
+
+  # Melakukan Tokenisasi
+  tokens = word_tokenize(text)
+
+  # Menghilangkan Stopwords
+  text = ' '.join([word for word in tokens if word not in stopwords])
+
+  # Melakukan lemmatizing
+  text = " ".join(slangwords.get(word, word) for word in text.split())
+  
+  return text
